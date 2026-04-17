@@ -49,7 +49,7 @@ const productRepository = {
     ]);
 
     return {
-      data,
+      records: data,
       total: total[0].count,
       page,
       limit,

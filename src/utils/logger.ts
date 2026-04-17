@@ -5,6 +5,7 @@ import datetime from "./datetime";
 interface LogMeta {
   url?: string;
   fromIp?: string;
+  duration?: number;
 }
 
 interface LogEntry extends winston.Logform.TransformableInfo {
@@ -23,10 +24,11 @@ const winston_config = {
       const resLog = `${timestamp} [${level}] : `;
 
       if (log.meta) {
-        const { url, fromIp } = log.meta;
+        const { url, fromIp, duration } = log.meta;
 
         if (url) message = `[${message}] ${log.meta.url}`;
         if (fromIp) message = `${fromIp} | ${message}`;
+        if (duration !== undefined) message = `${message} (${duration}ms)`;
       }
 
       return resLog + message;

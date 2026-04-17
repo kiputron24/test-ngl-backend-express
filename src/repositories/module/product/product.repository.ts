@@ -49,11 +49,13 @@ const productRepository = {
     ]);
 
     return {
-      records: data,
-      total: total[0].count,
-      page,
-      limit,
-      totalPages: Math.ceil(total[0].count / limit),
+      items: data,
+      pagination: {
+        total: total[0].count,
+        page,
+        limit,
+        totalPages: Math.ceil(total[0].count / limit),
+      },
     };
   },
 

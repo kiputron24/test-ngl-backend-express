@@ -1,5 +1,13 @@
+import axios from "axios";
 import { ErrorHandler } from "../../../config/http";
 import { ProductRepository } from "../../../repositories/module";
+
+interface ExternalProduct {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+}
 
 const productService = {
   getAll: async (query: {
@@ -62,29 +70,25 @@ const productService = {
   },
 
   syncFromExternalApi: async () => {
-    const response = await fetch("https://fakestoreapi.com/products");
-    if (!response.ok) {
+    try {
+      const { data: externalProducts } = await axios.get<ExternalProduct[]>(
+        "https://fakestoreapi.com/products"
+      );
+
+      const mapped = externalProducts.map((p: ExternalProduct) => ({
+        external_id: p.id,
+        name: p.title,
+        price: String(p.price),
+        stock: 0,
+        description: p.description || null,
+      }));
+
+      await ProductRepository.bulkUpsert(mapped);
+
+      return { synced: mapped.length };
+    } catch (error) {
       throw new ErrorHandler("Failed to fetch products from external API", 502);
     }
-
-    const externalProducts: {
-      id: number;
-      title: string;
-      price: number;
-      description: string;
-    }[] = await response.json();
-
-    const mapped = externalProducts.map(p => ({
-      external_id: p.id,
-      name: p.title,
-      price: String(p.price),
-      stock: 0,
-      description: p.description || null,
-    }));
-
-    await ProductRepository.bulkUpsert(mapped);
-
-    return { synced: mapped.length };
   },
 };
 

@@ -443,9 +443,9 @@ Scrape product data from Shopee based on a keyword. Returns the 3 products with 
 
 **Query Parameters:**
 
-| Parameter | Type   | Required | Description                 |
-| --------- | ------ | -------- | --------------------------- |
-| `keyword` | string | ✅       | Product keyword to search   |
+| Parameter | Type   | Required | Description               |
+| --------- | ------ | -------- | ------------------------- |
+| `keyword` | string | ✅       | Product keyword to search |
 
 **Response:**
 
@@ -582,21 +582,21 @@ test-nlg-backend-express/
 
 ## 🛠 Technologies Used
 
-| Technology        | Version | Purpose                  |
-| ----------------- | ------- | ------------------------ |
-| Express           | 5.2.1   | Web framework            |
-| TypeScript        | 6.0.3   | Language                 |
-| MySQL2            | 3.22.1  | Database driver          |
-| Drizzle ORM       | 0.45.2  | ORM                      |
-| Drizzle Kit       | 0.31.10 | Database migration tools |
-| Zod               | 4.3.6   | Schema validation        |
-| Winston           | 3.19.0  | Logging                  |
-| Helmet            | 8.1.0   | Security headers         |
-| CORS              | 2.8.6   | CORS middleware          |
-| Moment            | 2.30.1  | Date/time utility        |
-| Playwright        | Latest  | Browser automation       |
-| Nodemon           | 3.1.14  | Development hot reload   |
-| ts-node           | 10.9.2  | TypeScript executor      |
+| Technology  | Version | Purpose                  |
+| ----------- | ------- | ------------------------ |
+| Express     | 5.2.1   | Web framework            |
+| TypeScript  | 6.0.3   | Language                 |
+| MySQL2      | 3.22.1  | Database driver          |
+| Drizzle ORM | 0.45.2  | ORM                      |
+| Drizzle Kit | 0.31.10 | Database migration tools |
+| Zod         | 4.3.6   | Schema validation        |
+| Winston     | 3.19.0  | Logging                  |
+| Helmet      | 8.1.0   | Security headers         |
+| CORS        | 2.8.6   | CORS middleware          |
+| Moment      | 2.30.1  | Date/time utility        |
+| Playwright  | Latest  | Browser automation       |
+| Nodemon     | 3.1.14  | Development hot reload   |
+| ts-node     | 10.9.2  | TypeScript executor      |
 
 ## 📝 Important Notes
 

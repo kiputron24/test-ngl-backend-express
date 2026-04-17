@@ -435,6 +435,94 @@ curl -X POST http://localhost:3000/api/products/sync \
 
 ---
 
+### 3. Web Scraping Endpoint
+
+#### GET /scrap
+
+Scrape product data from Shopee based on a keyword. Returns the 3 products with the lowest prices.
+
+**Query Parameters:**
+
+| Parameter | Type   | Required | Description                 |
+| --------- | ------ | -------- | --------------------------- |
+| `keyword` | string | ✅       | Product keyword to search   |
+
+**Response:**
+
+```json
+{
+  "meta": {
+    "status": "success",
+    "message": "Top 3 cheapest products for \"Compressor\""
+  },
+  "data": [
+    {
+      "name": "Compressor ABC Brand 2HP",
+      "price": 2500000,
+      "priceFormatted": "Rp 2.500.000",
+      "link": "https://shopee.co.id/product/123456/789012"
+    },
+    {
+      "name": "Compressor XYZ 1.5HP",
+      "price": 1800000,
+      "priceFormatted": "Rp 1.800.000",
+      "link": "https://shopee.co.id/product/234567/890123"
+    },
+    {
+      "name": "Compressor Entry Level",
+      "price": 1200000,
+      "priceFormatted": "Rp 1.200.000",
+      "link": "https://shopee.co.id/product/345678/901234"
+    }
+  ]
+}
+```
+
+**cURL Examples:**
+
+```bash
+# Basic scraping
+curl -X GET "http://localhost:3000/api/scrap?keyword=Compressor"
+
+# Search for phone
+curl -X GET "http://localhost:3000/api/scrap?keyword=iPhone%2014"
+
+# Search for laptop
+curl -X GET "http://localhost:3000/api/scrap?keyword=Laptop%20Gaming"
+```
+
+**Error Responses:**
+
+```json
+{
+  "meta": {
+    "status": "error",
+    "message": "Keyword is required",
+    "code": 400
+  }
+}
+```
+
+```json
+{
+  "meta": {
+    "status": "error",
+    "message": "No products found - Shopee may have blocked with CAPTCHA",
+    "code": 503
+  }
+}
+```
+
+**Notes:**
+
+- The endpoint uses Playwright to scrape data from Shopee
+- Results are automatically sorted by price (ascending)
+- Returns only the top 3 cheapest products
+- If Shopee blocks the request with CAPTCHA, a 503 error is returned
+- Search keywords should be URL encoded
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -445,8 +533,12 @@ test-nlg-backend-express/
 │   │   ├── env.ts                      # Environment configuration
 │   │   └── http.ts                     # HTTP configuration
 │   ├── controllers/
-│   │   └── module/product/
-│   │       └── product.controller.ts   # Controller for product
+│   │   ├── index.ts
+│   │   └── module/
+│   │       ├── product/
+│   │       │   └── product.controller.ts   # Controller for product
+│   │       └── scrap/
+│   │           └── scrap.controller.ts     # Controller for scraping
 │   ├── database/
 │   │   ├── connection.ts               # Database connection
 │   │   └── schema/
@@ -461,11 +553,17 @@ test-nlg-backend-express/
 │   │       └── product.repository.ts   # Repository pattern for product
 │   ├── routes/
 │   │   ├── index.ts                    # Main router
-│   │   └── module/product/
-│   │       └── product.route.ts        # Routes for product
+│   │   └── module/
+│   │       ├── product/
+│   │       │   └── product.route.ts    # Routes for product
+│   │       └── scrap/
+│   │           └── scrap.route.ts      # Routes for scraping
 │   ├── services/
-│   │   └── module/product/
-│   │       └── product.service.ts      # Business logic for product
+│   │   └── module/
+│   │       ├── product/
+│   │       │   └── product.service.ts  # Business logic for product
+│   │       └── scrap/
+│   │           └── scrap.service.ts    # Business logic for scraping
 │   ├── utils/
 │   │   ├── datetime.ts                 # DateTime utility
 │   │   └── logger.ts                   # Logger configuration
@@ -484,20 +582,21 @@ test-nlg-backend-express/
 
 ## 🛠 Technologies Used
 
-| Technology  | Version | Purpose                  |
-| ----------- | ------- | ------------------------ |
-| Express     | 5.2.1   | Web framework            |
-| TypeScript  | 6.0.3   | Language                 |
-| MySQL2      | 3.22.1  | Database driver          |
-| Drizzle ORM | 0.45.2  | ORM                      |
-| Drizzle Kit | 0.31.10 | Database migration tools |
-| Zod         | 4.3.6   | Schema validation        |
-| Winston     | 3.19.0  | Logging                  |
-| Helmet      | 8.1.0   | Security headers         |
-| CORS        | 2.8.6   | CORS middleware          |
-| Moment      | 2.30.1  | Date/time utility        |
-| Nodemon     | 3.1.14  | Development hot reload   |
-| ts-node     | 10.9.2  | TypeScript executor      |
+| Technology        | Version | Purpose                  |
+| ----------------- | ------- | ------------------------ |
+| Express           | 5.2.1   | Web framework            |
+| TypeScript        | 6.0.3   | Language                 |
+| MySQL2            | 3.22.1  | Database driver          |
+| Drizzle ORM       | 0.45.2  | ORM                      |
+| Drizzle Kit       | 0.31.10 | Database migration tools |
+| Zod               | 4.3.6   | Schema validation        |
+| Winston           | 3.19.0  | Logging                  |
+| Helmet            | 8.1.0   | Security headers         |
+| CORS              | 2.8.6   | CORS middleware          |
+| Moment            | 2.30.1  | Date/time utility        |
+| Playwright        | Latest  | Browser automation       |
+| Nodemon           | 3.1.14  | Development hot reload   |
+| ts-node           | 10.9.2  | TypeScript executor      |
 
 ## 📝 Important Notes
 

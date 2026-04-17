@@ -72,7 +72,24 @@ const productService = {
   syncFromExternalApi: async () => {
     try {
       const { data: externalProducts } = await axios.get<ExternalProduct[]>(
-        "https://fakestoreapi.com/products"
+        "https://fakestoreapi.com/products",
+        {
+          timeout: 15000,
+          headers: {
+            "User-Agent":
+              "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            Accept: "application/json, text/plain, */*",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Accept-Encoding": "gzip, deflate, br",
+            Referer: "https://fakestoreapi.com/",
+            Origin: "https://fakestoreapi.com",
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-origin",
+            Connection: "keep-alive",
+            "Upgrade-Insecure-Requests": "1",
+          },
+        }
       );
 
       const mapped = externalProducts.map((p: ExternalProduct) => ({
@@ -86,8 +103,18 @@ const productService = {
       await ProductRepository.bulkUpsert(mapped);
 
       return { synced: mapped.length };
-    } catch (error) {
-      throw new ErrorHandler("Failed to fetch products from external API", 502);
+    } catch (error: any) {
+      console.error("Sync API Error:", {
+        message: error?.message,
+        status: error?.response?.status,
+        statusText: error?.response?.statusText,
+        url: error?.config?.url,
+        headers: error?.response?.headers,
+      });
+      throw new ErrorHandler(
+        `Failed to fetch products from external API: ${error?.message || "Unknown error"} (Status: ${error?.response?.status || "N/A"})`,
+        502
+      );
     }
   },
 };

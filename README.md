@@ -1,6 +1,6 @@
 # NLG Backend Express
 
-Backend API for NLG (Natural Language Generation) application built with Express.js, TypeScript, MySQL, and Drizzle ORM.
+Backend API for NLG application built with Express.js, TypeScript, MySQL, and Drizzle ORM.
 
 ## 📋 Table of Contents
 
@@ -84,14 +84,14 @@ DB_NAME=nlg
 
 ### Environment Variables:
 
-| Variable | Default | Description |
-|----------|---------|-----------|
-| `PORT` | 3000 | Express server port |
-| `DB_HOST` | localhost | MySQL database host |
-| `DB_PORT` | 3306 | MySQL database port |
-| `DB_USER` | root | Database username |
-| `DB_PASSWORD` | (empty) | Database password |
-| `DB_NAME` | nlg | Database name |
+| Variable      | Default   | Description         |
+| ------------- | --------- | ------------------- |
+| `PORT`        | 3000      | Express server port |
+| `DB_HOST`     | localhost | MySQL database host |
+| `DB_PORT`     | 3306      | MySQL database port |
+| `DB_USER`     | root      | Database username   |
+| `DB_PASSWORD` | (empty)   | Database password   |
+| `DB_NAME`     | nlg       | Database name       |
 
 ## 🎯 Running the Application
 
@@ -129,6 +129,7 @@ npm run db:studio
 ## 🔌 API Endpoints
 
 ### Base URL
+
 ```
 http://localhost:3000/api
 ```
@@ -140,6 +141,7 @@ http://localhost:3000/api
 Check server status.
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -148,6 +150,7 @@ Check server status.
 ```
 
 **cURL:**
+
 ```bash
 curl -X GET http://localhost:3000/api/ping
 ```
@@ -162,15 +165,16 @@ Get a list of all products with pagination and filtering.
 
 **Query Parameters:**
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-----------|
-| `page` | number | 1 | Pagination page number |
-| `limit` | number | 10 | Number of items per page (max: 100) |
-| `search` | string | "" | Search by product name |
-| `sortBy` | string | id | Column to sort by (id, name, price, stock, created_at) |
-| `sortOrder` | string | desc | Sort order (asc, desc) |
+| Parameter   | Type   | Default | Description                                            |
+| ----------- | ------ | ------- | ------------------------------------------------------ |
+| `page`      | number | 1       | Pagination page number                                 |
+| `limit`     | number | 10      | Number of items per page (max: 100)                    |
+| `search`    | string | ""      | Search by product name                                 |
+| `sortBy`    | string | id      | Column to sort by (id, name, price, stock, created_at) |
+| `sortOrder` | string | desc    | Sort order (asc, desc)                                 |
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -222,11 +226,12 @@ Get product details by ID.
 
 **URL Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-----------|
-| `id` | number | Product ID (required) |
+| Parameter | Type   | Description           |
+| --------- | ------ | --------------------- |
+| `id`      | number | Product ID (required) |
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -245,11 +250,13 @@ Get product details by ID.
 ```
 
 **cURL:**
+
 ```bash
 curl -X GET http://localhost:3000/api/products/1
 ```
 
 **Error Response (404):**
+
 ```json
 {
   "status": "error",
@@ -265,14 +272,15 @@ Create a new product.
 
 **Request Body:**
 
-| Field | Type | Required | Validation |
-|-------|------|----------|----------|
-| `name` | string | ✅ | Min 1, Max 255 characters |
-| `price` | number | ✅ | Must be positive |
-| `stock` | number | ❌ | Int, default 0, min 0 |
-| `description` | string | ❌ | Optional |
+| Field         | Type   | Required | Validation                |
+| ------------- | ------ | -------- | ------------------------- |
+| `name`        | string | ✅       | Min 1, Max 255 characters |
+| `price`       | number | ✅       | Must be positive          |
+| `stock`       | number | ❌       | Int, default 0, min 0     |
+| `description` | string | ❌       | Optional                  |
 
 **Request Example:**
+
 ```json
 {
   "name": "Laptop Dell XPS 13",
@@ -283,6 +291,7 @@ Create a new product.
 ```
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -302,6 +311,7 @@ Create a new product.
 ```
 
 **cURL:**
+
 ```bash
 curl -X POST http://localhost:3000/api/products \
   -H "Content-Type: application/json" \
@@ -321,20 +331,21 @@ Update an existing product.
 
 **URL Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-----------|
-| `id` | number | Product ID (required) |
+| Parameter | Type   | Description           |
+| --------- | ------ | --------------------- |
+| `id`      | number | Product ID (required) |
 
 **Request Body:** (All fields optional)
 
-| Field | Type | Validation |
-|-------|------|----------|
-| `name` | string | Min 1, Max 255 characters |
-| `price` | number | Must be positive |
-| `stock` | number | Int, min 0 |
-| `description` | string | Optional |
+| Field         | Type   | Validation                |
+| ------------- | ------ | ------------------------- |
+| `name`        | string | Min 1, Max 255 characters |
+| `price`       | number | Must be positive          |
+| `stock`       | number | Int, min 0                |
+| `description` | string | Optional                  |
 
 **Request Example:**
+
 ```json
 {
   "price": 14999999,
@@ -343,6 +354,7 @@ Update an existing product.
 ```
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -362,6 +374,7 @@ Update an existing product.
 ```
 
 **cURL:**
+
 ```bash
 curl -X PUT http://localhost:3000/api/products/2 \
   -H "Content-Type: application/json" \
@@ -379,11 +392,12 @@ Delete a product (soft delete - adds deleted_at timestamp).
 
 **URL Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-----------|
-| `id` | number | Product ID (required) |
+| Parameter | Type   | Description           |
+| --------- | ------ | --------------------- |
+| `id`      | number | Product ID (required) |
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -392,6 +406,7 @@ Delete a product (soft delete - adds deleted_at timestamp).
 ```
 
 **cURL:**
+
 ```bash
 curl -X DELETE http://localhost:3000/api/products/2
 ```
@@ -403,6 +418,7 @@ curl -X DELETE http://localhost:3000/api/products/2
 Synchronize products (special feature for specific needs).
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -411,6 +427,7 @@ Synchronize products (special feature for specific needs).
 ```
 
 **cURL:**
+
 ```bash
 curl -X POST http://localhost:3000/api/products/sync \
   -H "Content-Type: application/json"
@@ -467,20 +484,20 @@ test-nlg-backend-express/
 
 ## 🛠 Technologies Used
 
-| Technology | Version | Purpose |
-|-----------|---------|---------|
-| Express | 5.2.1 | Web framework |
-| TypeScript | 6.0.3 | Language |
-| MySQL2 | 3.22.1 | Database driver |
-| Drizzle ORM | 0.45.2 | ORM |
+| Technology  | Version | Purpose                  |
+| ----------- | ------- | ------------------------ |
+| Express     | 5.2.1   | Web framework            |
+| TypeScript  | 6.0.3   | Language                 |
+| MySQL2      | 3.22.1  | Database driver          |
+| Drizzle ORM | 0.45.2  | ORM                      |
 | Drizzle Kit | 0.31.10 | Database migration tools |
-| Zod | 4.3.6 | Schema validation |
-| Winston | 3.19.0 | Logging |
-| Helmet | 8.1.0 | Security headers |
-| CORS | 2.8.6 | CORS middleware |
-| Moment | 2.30.1 | Date/time utility |
-| Nodemon | 3.1.14 | Development hot reload |
-| ts-node | 10.9.2 | TypeScript executor |
+| Zod         | 4.3.6   | Schema validation        |
+| Winston     | 3.19.0  | Logging                  |
+| Helmet      | 8.1.0   | Security headers         |
+| CORS        | 2.8.6   | CORS middleware          |
+| Moment      | 2.30.1  | Date/time utility        |
+| Nodemon     | 3.1.14  | Development hot reload   |
+| ts-node     | 10.9.2  | TypeScript executor      |
 
 ## 📝 Important Notes
 
@@ -499,6 +516,7 @@ test-nlg-backend-express/
 ### Database Connection Error
 
 Make sure:
+
 - MySQL service is running
 - Credentials in `.env` are correct
 - Database `nlg` is created
